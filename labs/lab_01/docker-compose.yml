@@ -1,0 +1,14 @@
+services:
+    db:
+        image: postgres:latest
+        container_name: postgres_lab_1
+        restart: no
+        environment:
+            POSTGRES_USER: student
+            POSTGRES_PASSWORD: secretpassword
+            POSTGRES_DB: lab_db
+        ports:
+            - "5432:5432"
+        volumes:
+            - ./data:/var/lib/postgresql/csv_data:ro
+
