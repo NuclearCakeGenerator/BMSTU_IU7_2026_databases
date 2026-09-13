@@ -19,6 +19,7 @@ ACCESS_LEVEL_SPREAD = (1, 15)
 
 
 def write_csv(file_name, rows, fieldnames):
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     file_path = OUTPUT_DIR / file_name
     with file_path.open("w", newline="", encoding="utf-8") as csv_file:
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
