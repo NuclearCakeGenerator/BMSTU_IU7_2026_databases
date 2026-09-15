@@ -33,7 +33,7 @@ ADD CONSTRAINT fk_passages_to_employees FOREIGN KEY (person_id) REFERENCES emplo
 ADD CONSTRAINT fk_passages_to_access_zones FOREIGN KEY (zone_id) REFERENCES access_zones (id) ON DELETE SET NULL,
 ADD CONSTRAINT fk_passages_to_access_cards FOREIGN KEY (card_id) REFERENCES access_cards (id) ON DELETE SET NULL;
 
--- -- 3. Ограничения проверки (CHECK)
+-- 3. Ограничения проверки
 ALTER TABLE employees
 ADD CONSTRAINT chk_employees_access_level CHECK (access_level > 0);
 
