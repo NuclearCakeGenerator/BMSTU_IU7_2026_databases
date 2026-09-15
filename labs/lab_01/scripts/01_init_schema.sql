@@ -1,16 +1,3 @@
--- Очистка старых таблиц, если они есть
-DROP TABLE IF EXISTS employees CASCADE;
-
-DROP TABLE IF EXISTS working_hours CASCADE;
-
-DROP TABLE IF EXISTS access_zones CASCADE;
-
-DROP TABLE IF EXISTS access_cards CASCADE;
-
-DROP TABLE IF EXISTS passages CASCADE;
-
-DROP TABLE IF EXISTS card_assignments CASCADE;
-
 CREATE TYPE card_status_t AS ENUM('active', 'revoked', 'expired');
 
 CREATE TYPE direction_t AS ENUM('IN', 'OUT');
