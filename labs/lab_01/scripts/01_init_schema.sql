@@ -10,7 +10,7 @@ CREATE TABLE
         email VARCHAR(255),
         access_level INT NOT NULL,
         hired_at TIMESTAMP NOT NULL,
-        working_hours INT NOT NULL
+        working_hours INT
     );
 
 CREATE TABLE
@@ -53,7 +53,7 @@ CREATE TABLE
         TIME TIMESTAMP NOT NULL,
         direction direction_t NOT NULL,
         is_granted BOOLEAN NOT NULL,
-        person_id INT NOT NULL,
-        card_id INT NOT NULL,
-        zone_id INT NOT NULL
+        person_id INT,
+        card_id INT,
+        zone_id INT
     );
