@@ -4,52 +4,56 @@ CREATE TYPE direction_t AS ENUM('IN', 'OUT');
 
 CREATE TABLE
     employees (
-        id INT,
-        first_name VARCHAR(255),
+        id INT NOT NULL,
+        first_name VARCHAR(255) NOT NULL,
         last_name VARCHAR(255),
         email VARCHAR(255),
-        access_level INT,
-        hired_at TIMESTAMP,
-        working_hours INT
+        access_level INT NOT NULL,
+        hired_at TIMESTAMP NOT NULL,
+        working_hours INT NOT NULL
     );
 
 CREATE TABLE
-    working_hours (id INT, start_time TIME, end_time TIME);
+    working_hours (
+        id INT NOT NULL,
+        start_time TIME NOT NULL,
+        end_time TIME NOT NULL
+    );
 
 CREATE TABLE
     access_cards (
-        id INT,
-        uid_card BYTEA,
-        card_status card_status_t,
-        issue_date TIMESTAMP,
+        id INT NOT NULL,
+        uid_card BYTEA NOT NULL,
+        card_status card_status_t NOT NULL,
+        issue_date TIMESTAMP NOT NULL,
         expiry_date TIMESTAMP
     );
 
 CREATE TABLE
     access_zones (
-        id INT,
-        zone_name VARCHAR(255),
-        security_level INT,
+        id INT NOT NULL,
+        zone_name VARCHAR(255) NOT NULL,
+        security_level INT NOT NULL,
         outer_zone_id INT,
         device_model BYTEA,
-        city VARCHAR(255)
+        city VARCHAR(255) NOT NULL
     );
 
 CREATE TABLE
     card_assignments (
-        id INT,
-        is_active_assignment BOOLEAN,
-        owner_id INT,
-        card_id INT
+        id INT NOT NULL,
+        is_active_assignment BOOLEAN NOT NULL,
+        owner_id INT NOT NULL,
+        card_id INT NOT NULL
     );
 
 CREATE TABLE
     passages (
-        id INT,
-        TIME TIMESTAMP,
-        direction direction_t,
-        is_granted BOOLEAN,
-        person_id INT,
-        card_id INT,
-        zone_id INT
+        id INT NOT NULL,
+        TIME TIMESTAMP NOT NULL,
+        direction direction_t NOT NULL,
+        is_granted BOOLEAN NOT NULL,
+        person_id INT NOT NULL,
+        card_id INT NOT NULL,
+        zone_id INT NOT NULL
     );
