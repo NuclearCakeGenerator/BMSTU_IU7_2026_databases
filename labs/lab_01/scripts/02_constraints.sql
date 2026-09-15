@@ -34,11 +34,17 @@ ADD CONSTRAINT fk_passages_to_access_zones FOREIGN KEY (zone_id) REFERENCES acce
 ADD CONSTRAINT fk_passages_to_access_cards FOREIGN KEY (card_id) REFERENCES access_cards (id) ON DELETE SET NULL;
 
 -- -- 3. Ограничения проверки (CHECK)
--- ALTER TABLE 
---     ADD CONSTRAINT chk_product_price CHECK (price > 0),
---     ADD CONSTRAINT chk_product_stock CHECK (stock_qty >= 0);
--- ALTER TABLE orders 
---     ADD CONSTRAINT chk_order_quantity CHECK (quantity > 0);
--- -- 4. Ограничения уникальности (UNIQUE)
--- ALTER TABLE customers 
---     ADD CONSTRAINT uq_customer_email UNIQUE (email);
+ALTER TABLE employees
+ADD CONSTRAINT chk_employees_access_level CHECK (access_level > 0);
+
+ALTER TABLE access_cards
+ADD CONSTRAINT chk_access_cards_expiry CHECK (
+    expiry_date = NULL
+    OR expiry_date >= issue_date
+);
+
+ALTER TABLE access_zones
+ADD CONSTRAINT chk_access_zones_level CHECK (security_level > 0);
+
+ALTER TABLE working_hours
+ADD CONSTRAINT chk_working_hrs CHECK (start_time <= end_time);
