@@ -24,14 +24,14 @@ def reset_database():
     cur = conn.cursor()
 
     for file_name in SQL_FILES:
-        print(f"  Выполняется: {file_name} ...", end=" ")
+        print(f"  Выполняется: {file_name} ...")
         t0 = time.perf_counter()
         
         with open(file_name, "r", encoding="utf-8") as f:
             cur.execute(f.read())
         
-        conn.commit()
-        print(f"готово за {time.perf_counter() - t0:.3f} сек.")
+    conn.commit()
+    print(f"готово за {time.perf_counter() - t0:.3f} сек.")
 
     cur.close()
     conn.close()
