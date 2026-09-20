@@ -8,7 +8,7 @@ services:
             POSTGRES_PASSWORD: secretpassword
             POSTGRES_DB: lab_db
         ports:
-            - "5432:5432"
+            - "5433:5432"
         volumes:
             - ./data:/var/lib/postgresql/csv_data:ro
 
