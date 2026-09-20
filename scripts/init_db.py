@@ -1,4 +1,5 @@
 import time
+from pathlib import Path
 
 import psycopg2
 
@@ -15,6 +16,7 @@ SQL_FILES = [
     "02_constraints.sql",
     "03_bulk_insert.sql",
 ]
+SQL_DIR = Path(__file__).resolve().parent
 
 def reset_database():
     print("Database reset...")
@@ -27,7 +29,7 @@ def reset_database():
         print(f"  Выполняется: {file_name} ...")
         t0 = time.perf_counter()
         
-        with open(file_name, "r", encoding="utf-8") as f:
+        with (SQL_DIR / file_name).open("r", encoding="utf-8") as f:
             cur.execute(f.read())
         
     conn.commit()
