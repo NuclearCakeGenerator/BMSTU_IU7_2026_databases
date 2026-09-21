@@ -234,7 +234,7 @@ def generate_passages(employees, access_cards, access_areas, count=PASSAGES_COUN
         rows.append(
             {
                 "id": passage_id,
-                "time": random_timestamp(*PASSAGE_TIME_SPREAD).isoformat(sep=" "),
+                "passage_time": random_timestamp(*PASSAGE_TIME_SPREAD).isoformat(sep=" "),
                 "direction": random.choice(["IN", "OUT"]),
                 "is_granted": str(granted).lower(),
                 "person_id": employee["id"],
@@ -246,7 +246,7 @@ def generate_passages(employees, access_cards, access_areas, count=PASSAGES_COUN
     write_csv(
         "passages.csv",
         rows,
-        ["id", "time", "direction", "is_granted", "person_id", "card_id", "zone_id"],
+        ["id", "passage_time", "direction", "is_granted", "person_id", "card_id", "zone_id"],
     )
     return rows
 

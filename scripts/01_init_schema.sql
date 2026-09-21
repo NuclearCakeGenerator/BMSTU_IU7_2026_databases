@@ -50,7 +50,7 @@ CREATE TABLE
 CREATE TABLE
     passages (
         id INT NOT NULL,
-        TIME TIMESTAMP NOT NULL,
+        passage_time TIMESTAMP NOT NULL,
         direction direction_t NOT NULL,
         is_granted BOOLEAN NOT NULL,
         person_id INT,
