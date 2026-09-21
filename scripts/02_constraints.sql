@@ -38,9 +38,9 @@ ALTER TABLE employees
 ADD CONSTRAINT chk_employees_access_level CHECK (access_level > 0);
 
 ALTER TABLE access_cards
-ADD CONSTRAINT chk_access_cards_expiry CHECK (
-    expiry_date = NULL
-    OR expiry_date >= issue_date
+ADD CONSTRAINT chk_access_cards_expire CHECK (
+    expire_date = NULL
+    OR expire_date >= issue_date
 );
 
 ALTER TABLE access_zones

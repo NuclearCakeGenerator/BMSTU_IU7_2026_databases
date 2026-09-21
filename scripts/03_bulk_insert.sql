@@ -42,7 +42,7 @@ COPY access_cards (
     uid_card,
     card_status,
     issue_date,
-    expiry_date
+    expire_date
 )
 FROM
     '/var/lib/postgresql/csv_data/access_cards.csv'
@@ -88,7 +88,7 @@ WITH
 
 COPY passages (
     id,
-    "time",
+    passage_time,
     direction,
     is_granted,
     person_id,

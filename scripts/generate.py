@@ -117,21 +117,21 @@ def generate_access_cards(count=ACCESS_CARDS_COUNT):
             weights=ACCESS_CARD_STATUS_WEIGHTS,
             k=1,
         )[0]
-        expiry_date = issue_date + timedelta(days=random.randint(*ACCESS_CARD_DURABILITY_SPREAD))
+        expire_date = issue_date + timedelta(days=random.randint(*ACCESS_CARD_DURABILITY_SPREAD))
         rows.append(
             {
                 "id": card_id,
                 "uid_card": to_bytea(secrets.token_bytes(4)),
                 "card_status": status,
                 "issue_date": issue_date.isoformat(sep=" "),
-                "expiry_date": expiry_date.isoformat(sep=" "),
+                "expire_date": expire_date.isoformat(sep=" "),
             }
         )
 
     write_csv(
         "access_cards.csv",
         rows,
-        ["id", "uid_card", "card_status", "issue_date", "expiry_date"],
+        ["id", "uid_card", "card_status", "issue_date", "expire_date"],
     )
     return rows
 

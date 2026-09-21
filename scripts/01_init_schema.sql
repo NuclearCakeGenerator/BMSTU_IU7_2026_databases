@@ -26,7 +26,7 @@ CREATE TABLE
         uid_card BYTEA NOT NULL,
         card_status card_status_t NOT NULL,
         issue_date TIMESTAMP NOT NULL,
-        expiry_date TIMESTAMP
+        expire_date TIMESTAMP
     );
 
 CREATE TABLE
