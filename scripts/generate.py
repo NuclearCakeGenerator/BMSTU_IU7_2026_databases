@@ -216,7 +216,7 @@ def generate_access_zones(count=ACCESS_ZONES_COUNT):
 
 
 def generate_passages(employees, access_cards, access_areas, count=PASSAGES_COUNT):
-    PASSAGE_TIME_SPREAD = (datetime(2025, 1, 1), datetime(2025, 12, 31, 23, 59, 59))
+    PASSAGE_TIME_SPREAD = (datetime(2002, 1, 1), datetime(2026, 12, 31, 23, 59, 59))
 
 
     rows = []
