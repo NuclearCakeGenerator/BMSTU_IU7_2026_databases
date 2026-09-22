@@ -1,23 +1,4 @@
--- 1. Первичные ключи
-ALTER TABLE employees
-ADD CONSTRAINT pk_employees PRIMARY KEY (id);
-
-ALTER TABLE working_hours
-ADD CONSTRAINT pk_pworking_hours PRIMARY KEY (id);
-
-ALTER TABLE access_cards
-ADD CONSTRAINT pk_access_cards PRIMARY KEY (id);
-
-ALTER TABLE access_zones
-ADD CONSTRAINT pk_access_zones PRIMARY KEY (id);
-
-ALTER TABLE card_assignments
-ADD CONSTRAINT pk_card_assignments PRIMARY KEY (id);
-
-ALTER TABLE passages
-ADD CONSTRAINT pk_passages PRIMARY KEY (id);
-
--- 2. Внешние ключи
+-- Внешние ключи
 ALTER TABLE employees
 ADD CONSTRAINT fk_orders_customer FOREIGN KEY (working_hours) REFERENCES working_hours (id) ON DELETE SET NULL;
 
@@ -33,7 +14,7 @@ ADD CONSTRAINT fk_passages_to_employees FOREIGN KEY (person_id) REFERENCES emplo
 ADD CONSTRAINT fk_passages_to_access_zones FOREIGN KEY (zone_id) REFERENCES access_zones (id) ON DELETE SET NULL,
 ADD CONSTRAINT fk_passages_to_access_cards FOREIGN KEY (card_id) REFERENCES access_cards (id) ON DELETE SET NULL;
 
--- 3. Ограничения проверки
+-- Ограничения проверки
 ALTER TABLE employees
 ADD CONSTRAINT chk_employees_access_level CHECK (access_level > 0);
 

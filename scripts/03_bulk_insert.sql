@@ -105,3 +105,52 @@ WITH
         NULL '',
         ENCODING 'utf8'
     );
+
+-- Sync sequence counters after CSV import
+SELECT
+    SETVAL(
+        PG_GET_SERIAL_SEQUENCE('working_hours', 'id'),
+        COALESCE(MAX(id), 1)
+    )
+FROM
+    working_hours;
+
+SELECT
+    SETVAL(
+        PG_GET_SERIAL_SEQUENCE('employees', 'id'),
+        COALESCE(MAX(id), 1)
+    )
+FROM
+    employees;
+
+SELECT
+    SETVAL(
+        PG_GET_SERIAL_SEQUENCE('access_cards', 'id'),
+        COALESCE(MAX(id), 1)
+    )
+FROM
+    access_cards;
+
+SELECT
+    SETVAL(
+        PG_GET_SERIAL_SEQUENCE('access_zones', 'id'),
+        COALESCE(MAX(id), 1)
+    )
+FROM
+    access_zones;
+
+SELECT
+    SETVAL(
+        PG_GET_SERIAL_SEQUENCE('card_assignments', 'id'),
+        COALESCE(MAX(id), 1)
+    )
+FROM
+    card_assignments;
+
+SELECT
+    SETVAL(
+        PG_GET_SERIAL_SEQUENCE('passages', 'id'),
+        COALESCE(MAX(id), 1)
+    )
+FROM
+    passages;
