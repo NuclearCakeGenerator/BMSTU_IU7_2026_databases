@@ -1,4 +1,5 @@
 {
-    "Prettier-SQL.SQLFlavourOverride": "postgresql",
-    "Prettier-SQL.keywordCase": "upper"
+    "SQL-Formatter-VSCode.dataTypeCase": "upper",
+    "SQL-Formatter-VSCode.dialect": "postgresql",
+    "SQL-Formatter-VSCode.keywordCase": "upper"
 }

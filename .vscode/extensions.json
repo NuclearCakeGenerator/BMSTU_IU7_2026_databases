@@ -11,6 +11,6 @@
         "ms-python.debugpy",
         "ms-python.vscode-python-envs",
         "repreng.csv",
-        "inferrinizzard.prettier-sql-vscode"
+        "renesaarsoo.sql-formatter-vsc"
     ]
 }
