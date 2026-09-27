@@ -15,6 +15,7 @@ SQL_FILES = [
     "01_init_schema.sql",
     "02_constraints.sql",
     "03_bulk_insert.sql",
+    "04_create_executables.sql",
 ]
 SQL_DIR = Path(__file__).resolve().parent
 
