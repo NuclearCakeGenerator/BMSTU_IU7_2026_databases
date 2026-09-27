@@ -4,7 +4,7 @@ from pathlib import Path
 import psycopg2
 
 DB_CONFIG = {
-    "host": "localhost",
+    "host": "127.0.0.1",
     "port": 5433,
     "dbname": "lab_db",
     "user": "student",
@@ -32,9 +32,9 @@ def reset_database():
         
         with (SQL_DIR / file_name).open("r", encoding="utf-8") as f:
             cur.execute(f.read())
-        
+        print(f"готово за {time.perf_counter() - t0:.3f} сек.")
+
     conn.commit()
-    print(f"готово за {time.perf_counter() - t0:.3f} сек.")
 
     cur.close()
     conn.close()
