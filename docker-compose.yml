@@ -1,7 +1,7 @@
 services:
     db:
-        image: postgres:latest
-        container_name: postgres_lab_1
+        build: .
+        container_name: postgres_labs
         restart: no
         environment:
             POSTGRES_USER: student
