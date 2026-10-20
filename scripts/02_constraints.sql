@@ -1,6 +1,6 @@
 -- Внешние ключи
 ALTER TABLE employees
-ADD CONSTRAINT fk_orders_customer FOREIGN KEY (working_hours) REFERENCES working_hours (id) ON DELETE SET NULL;
+ADD CONSTRAINT fk_employees_to_working_hours FOREIGN KEY (working_hours) REFERENCES working_hours (id) ON DELETE SET NULL;
 
 ALTER TABLE access_zones
 ADD CONSTRAINT fk_access_zones FOREIGN KEY (outer_zone_id) REFERENCES access_zones (id) ON DELETE CASCADE;
@@ -19,10 +19,7 @@ ALTER TABLE employees
 ADD CONSTRAINT chk_employees_access_level CHECK (access_level > 0);
 
 ALTER TABLE access_cards
-ADD CONSTRAINT chk_access_cards_expire CHECK (
-    expire_date = NULL
-    OR expire_date >= issue_date
-);
+ADD CONSTRAINT chk_access_cards_expire CHECK (expire_date >= issue_date);
 
 ALTER TABLE access_zones
 ADD CONSTRAINT chk_access_zones_level CHECK (security_level > 0);
