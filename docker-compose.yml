@@ -10,5 +10,9 @@ services:
         ports:
             - "5433:5432"
         volumes:
-            - ./data:/var/lib/postgresql/csv_data:ro
-
+            - type: tmpfs
+              target: /var/lib/postgresql
+            - type: bind
+              source: ./data
+              target: /var/lib/postgresql/csv_data
+              read_only: true
