@@ -57,7 +57,27 @@ CALL archive_expired_cards (50);
 # 5 Вызов триггера
 
 ```sql
+SELECT
+    id,
+    email
+FROM
+    employees e
+WHERE
+    id = 1;
 
+UPDATE employees e
+SET
+    email = 'UPPERCASE@POCHTA.RU'
+WHERE
+    id = 1;
+
+SELECT
+    id,
+    email
+FROM
+    employees e
+WHERE
+    id = 1;
 ```
 
 # 6 Использование пользовательского типа данных

@@ -441,3 +441,17 @@ CREATE OR REPLACE PROCEDURE archive_expired_cards (batch_size INT) AS $$
             
     plpy.info(f"Процедура успешно завершена. Всего обновлено карт: {total_updated}")
 $$ LANGUAGE plpython3u;
+
+--- Триггер ---
+CREATE OR REPLACE FUNCTION trg_email_normalize () RETURNS trigger AS $$
+new = TD["new"]
+if new["email"] is not None:
+    new["email"] = new["email"].strip().lower() or None
+return "MODIFY"
+$$ LANGUAGE plpython3u;
+
+CREATE TRIGGER email_normalize
+BEFORE INSERT OR UPDATE ON employees FOR EACH ROW
+EXECUTE FUNCTION trg_email_normalize ();
+
+---
