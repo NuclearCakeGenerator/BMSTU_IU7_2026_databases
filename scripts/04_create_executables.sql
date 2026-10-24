@@ -454,4 +454,31 @@ CREATE TRIGGER email_normalize
 BEFORE INSERT OR UPDATE ON employees FOR EACH ROW
 EXECUTE FUNCTION trg_email_normalize ();
 
----
+--- Тип данных ---
+-- CREATE TYPE time_window AS (start_t TIME, end_t TIME);
+CREATE OR REPLACE FUNCTION make_time_window (s TIME, e TIME) RETURNS time_window LANGUAGE plpython3u IMMUTABLE STRICT AS $$
+if s == e:
+    plpy.error("начало и конец окна совпадают")
+return {"start_t": s, "end_t": e}
+$$;
+
+CREATE OR REPLACE FUNCTION tw_contains (w time_window, t TIME) RETURNS BOOLEAN LANGUAGE plpython3u IMMUTABLE STRICT AS $$
+from datetime import time
+s, e, x = (time.fromisoformat(v) for v in (w["start_t"], w["end_t"], t))
+if s < e:
+    return s <= x < e
+return x >= s or x < e          # окно через полночь
+$$;
+
+CREATE OR REPLACE FUNCTION tw_minutes (w time_window) RETURNS INT LANGUAGE plpython3u IMMUTABLE STRICT AS $$
+from datetime import time
+s, e = (time.fromisoformat(v) for v in (w["start_t"], w["end_t"]))
+sm, em = s.hour * 60 + s.minute, e.hour * 60 + e.minute
+return (em - sm) % (24 * 60)
+$$;
+
+CREATE OPERATOR @> (
+    LEFTARG = time_window,
+    RIGHTARG = TIME,
+    FUNCTION = tw_contains
+);
