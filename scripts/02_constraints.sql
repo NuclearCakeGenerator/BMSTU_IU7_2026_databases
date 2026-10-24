@@ -24,5 +24,5 @@ ADD CONSTRAINT chk_access_cards_expire CHECK (expire_date >= issue_date);
 ALTER TABLE access_zones
 ADD CONSTRAINT chk_access_zones_level CHECK (security_level > 0);
 
-ALTER TABLE working_hours
-ADD CONSTRAINT chk_working_hrs CHECK (start_time <= end_time);
+-- ALTER TABLE working_hours
+-- ADD CONSTRAINT chk_working_hrs CHECK (start_time <= end_time);
