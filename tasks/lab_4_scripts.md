@@ -1,4 +1,5 @@
 # 1 Вызов скалярной функции
+
 ```sql
 SELECT
     first_name,
@@ -10,6 +11,7 @@ FROM
 ```
 
 # 2 Вызов агрегатной функции
+
 ```sql
 SELECT
     first_name,
@@ -41,21 +43,25 @@ ORDER BY
 ```
 
 # 3 Вызов табличной функции
+
 ```sql
 SELECT * FROM detect_double_passages_by_id(5);
 ```
 
 # 4 Вызов процедуры
-```sql
 
+```sql
+CALL archive_expired_cards (50);
 ```
 
 # 5 Вызов триггера
+
 ```sql
 
 ```
 
 # 6 Использование пользовательского типа данных
+
 ```sql
 
 ```

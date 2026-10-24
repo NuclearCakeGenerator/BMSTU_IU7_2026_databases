@@ -377,6 +377,7 @@ CREATE OR REPLACE AGGREGATE xor_cards_uid (bytea) (
     sfunc = xor_cards_uid_state_transition,
     stype = bytea
 );
+
 --- Табличная функция ---
 CREATE OR REPLACE FUNCTION detect_double_passages_by_id (target_card_id INT) RETURNS TABLE (
     card_id INT,
@@ -411,4 +412,32 @@ CREATE OR REPLACE FUNCTION detect_double_passages_by_id (target_card_id INT) RET
                 "second_passage_time": next_row["passage_time"],
                 "repeated_direction": next_row["direction"]
             }
+$$ LANGUAGE plpython3u;
+
+--- Процедура ---
+CREATE OR REPLACE PROCEDURE archive_expired_cards (batch_size INT) AS $$
+    # Запрашиваем все активные карты, срок действия которых истёк
+    query = """
+        SELECT id 
+        FROM access_cards 
+        WHERE card_status = 'active' AND expire_date < NOW()
+    """
+    expired_cards = plpy.execute(query)
+    
+    total_updated = 0
+    
+    update_query = "UPDATE access_cards SET card_status = 'expired' WHERE id = $1"
+    prep_update = plpy.prepare(update_query, ["int"])
+    
+    plpy.info(f"Найдено просроченных карт для обработки: {len(expired_cards)}")
+    
+    for row in expired_cards:
+        plpy.execute(prep_update, [row["id"]])
+        total_updated += 1
+
+        if total_updated % batch_size == 0:
+            plpy.commit()
+            plpy.info(f"Промежуточный коммит: обработано {total_updated} карт.")
+            
+    plpy.info(f"Процедура успешно завершена. Всего обновлено карт: {total_updated}")
 $$ LANGUAGE plpython3u;
