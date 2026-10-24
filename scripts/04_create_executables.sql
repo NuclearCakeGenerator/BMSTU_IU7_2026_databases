@@ -337,3 +337,24 @@ DROP TRIGGER IF EXISTS trg_insert_rejected_passage ON rejected_passages_view;
 CREATE TRIGGER trg_insert_rejected_passage
 INSTEAD OF INSERT ON rejected_passages_view FOR EACH ROW
 EXECUTE FUNCTION insert_rejected_passage ();
+
+
+------------------------------ CLR ----------------------------------
+CREATE EXTENSION if NOT EXISTS plpython3u;
+
+CREATE OR REPLACE FUNCTION HideEmail (email VARCHAR) returns VARCHAR language plpython3u immutable strict AS $$
+    if not email or '@' not in email:
+         return email
+
+    name_part, domain_part = email.split('@', 1)
+
+    # Если в имени 1 или 2 символа, заменить фиксированным количеством звездочек
+    if len(name_part) <= 2:
+        masked_name = name_part[0] + "****"
+    else:
+        # Оставляем первую и последнюю букву имени, между ними звездочки
+        masked_name = name_part[0] + "*" * (len(name_part)-1) + name_part[-1]
+        
+    return f"{masked_name}@{domain_part}"
+$$;
+
