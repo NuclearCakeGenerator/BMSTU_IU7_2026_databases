@@ -338,10 +338,10 @@ CREATE TRIGGER trg_insert_rejected_passage
 INSTEAD OF INSERT ON rejected_passages_view FOR EACH ROW
 EXECUTE FUNCTION insert_rejected_passage ();
 
-
------------------------------- CLR ----------------------------------
+----------CLR (PostgreSQL Procedural Language - PL) --------------
 CREATE EXTENSION if NOT EXISTS plpython3u;
 
+---  Скалярная функция ---
 CREATE OR REPLACE FUNCTION HideEmail (email VARCHAR) returns VARCHAR language plpython3u immutable strict AS $$
     if not email or '@' not in email:
          return email
@@ -358,3 +358,57 @@ CREATE OR REPLACE FUNCTION HideEmail (email VARCHAR) returns VARCHAR language pl
     return f"{masked_name}@{domain_part}"
 $$;
 
+--- Агрегатная функция ---
+CREATE OR REPLACE FUNCTION xor_cards_uid_state_transition (current_state bytea, new_uid bytea) returns bytea AS $$
+    if current_state is None:
+        return new_uid
+
+    if new_uid is None:
+        return current_state
+
+    maxlen = max(len(current_state), len(new_uid))
+    state = current_state.ljust(maxlen, b'\x00')
+    uid = new_uid.ljust(maxlen, b'\x00')
+
+    return bytes(b1^b2 for b1, b2 in zip (state, uid))
+$$ language plpython3u;
+
+CREATE OR REPLACE AGGREGATE xor_cards_uid (bytea) (
+    sfunc = xor_cards_uid_state_transition,
+    stype = bytea
+);
+--- Табличная функция ---
+CREATE OR REPLACE FUNCTION detect_double_passages_by_id (target_card_id INT) RETURNS TABLE (
+    card_id INT,
+    employee_id INT,
+    first_passage_time TIMESTAMP,
+    second_passage_time TIMESTAMP,
+    repeated_direction direction_t
+) AS $$
+    query = """
+        SELECT passage_time, direction, person_id 
+        FROM passages 
+        WHERE card_id = $1 AND is_granted = true
+        ORDER BY passage_time ASC
+    """
+    
+    prep = plpy.prepare(query, ["int"])
+    history = plpy.execute(prep, [target_card_id])
+
+    if len(history) < 2:
+        return
+
+    for i in range(len(history) - 1):
+        current_row = history[i]
+        next_row = history[i + 1]
+
+        # Если направления совпадают
+        if current_row["direction"] == next_row["direction"]:
+            yield {
+                "card_id": target_card_id,
+                "employee_id": next_row["person_id"],  # Кто приложил карту второй раз
+                "first_passage_time": current_row["passage_time"],
+                "second_passage_time": next_row["passage_time"],
+                "repeated_direction": next_row["direction"]
+            }
+$$ LANGUAGE plpython3u;
