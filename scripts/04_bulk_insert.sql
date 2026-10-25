@@ -5,7 +5,31 @@ access_zones,
 passages,
 card_assignments;
 
-COPY working_hours (id, start_time, end_time)
+--- Временный view для конвертации ---
+CREATE VIEW working_hours_import_view AS
+SELECT
+    id,
+    NULL::TIME AS start_time,
+    NULL::TIME AS end_time
+FROM
+    working_hours;
+
+--- Триггер для автоконвертации ---
+CREATE OR REPLACE FUNCTION insert_working_hours_composite () RETURNS TRIGGER AS $$
+BEGIN
+    INSERT INTO working_hours (id, time_range)
+    VALUES (NEW.id, make_time_window(NEW.start_time, NEW.end_time));
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+--- Подключение триггера ---
+CREATE TRIGGER trg_working_hours_import
+INSTEAD OF INSERT ON working_hours_import_view FOR EACH ROW
+EXECUTE FUNCTION insert_working_hours_composite ();
+
+--- Копирование в view ---
+COPY working_hours_import_view (id, start_time, end_time)
 FROM
     '/var/lib/postgresql/csv_data/working_hours.csv'
 WITH
@@ -17,6 +41,13 @@ WITH
         ENCODING 'utf8'
     );
 
+DROP TRIGGER trg_working_hours_import ON working_hours_import_view;
+
+DROP FUNCTION insert_working_hours_composite ();
+
+DROP VIEW working_hours_import_view;
+
+--- Убрал все временное ---
 COPY employees (
     id,
     first_name,
