@@ -14,8 +14,8 @@ DB_CONFIG = {
 SQL_FILES = [
     "01_init_schema.sql",
     "02_constraints.sql",
-    "03_bulk_insert.sql",
-    "04_create_executables.sql",
+    "03_create_executables.sql",
+    "04_bulk_insert.sql",
 ]
 SQL_DIR = Path(__file__).resolve().parent
 
