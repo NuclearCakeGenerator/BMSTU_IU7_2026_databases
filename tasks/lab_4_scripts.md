@@ -83,5 +83,29 @@ WHERE
 # 6 Использование пользовательского типа данных
 
 ```sql
+--- тест ---
+SELECT
+    make_time_window ('22:00', '06:00') @> '23:30'::TIME;
 
+SELECT
+    make_time_window ('22:00', '06:00') @> '12:00'::TIME;
+
+SELECT
+    tw_minutes (make_time_window ('22:00', '06:00'));
+
+--- использование ---
+SELECT
+    e.last_name,
+    p.passage_time,
+    (w.time_range).start_t AS start,
+    (w.time_range).end_t AS END
+FROM
+    passages p
+    JOIN employees e ON e.id = p.person_id
+    JOIN working_hours w ON w.id = e.working_hours
+WHERE
+    p.is_granted
+    AND NOT (w.time_range @> p.passage_time::TIME)
+LIMIT
+    20;
 ```
