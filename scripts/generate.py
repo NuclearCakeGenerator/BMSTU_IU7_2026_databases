@@ -39,7 +39,7 @@ def generate_working_hours(count=WORKING_HOURS_COUNT):
     rows = []
 
     for schedule_id in range(1, count + 1):
-        start_minutes, end_minutes = sorted([random.randint(0, 1439), random.randint(0, 1439)])
+        start_minutes, end_minutes = [random.randint(0, 1439), random.randint(0, 1439)]
         start_time = time(
             hour=start_minutes // 60,
             minute=start_minutes % 60,
